@@ -1,0 +1,8 @@
+flask
+pytest
+gunicorn
+suds
+spyne
+lxml
+netifaces
+dnspython
