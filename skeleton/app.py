@@ -4,7 +4,7 @@ from suds.client import Client
 
 app = Flask("__name__")
 # client = Client('link to your wsdl file', cache=None)
-client = Client('http://localhost:8090/?wsdl', cache=None) # TODO add error handling
+client = Client('http://757e-193-40-12-11.ngrok.io/?wsdl', cache=None) # TODO add error handling
 
 @app.route('/', methods=['GET'])
 def index():
