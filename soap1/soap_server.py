@@ -1,4 +1,6 @@
 import os
+import socket
+import dns.resolver
 from spyne import Application, rpc, ServiceBase, Iterable, Integer, Unicode
 from spyne.protocol.soap import Soap11
 from spyne.server.wsgi import WsgiApplication
@@ -36,6 +38,33 @@ class HelloWorldService(ServiceBase):
             result.append(f"{hostname} is up!")
         else:
             result.append(f"{hostname} is down!")
+        return result
+
+
+    @rpc(Unicode, _returns=Iterable(Unicode))
+    def domain_ip(ctx, domain_name):
+        """Docstrings for service methods appear as documentation in the wsdl.
+        <b>What fun!</b>
+        @param domain_name the domain to ping
+        @return the completed array
+        """
+        result = []
+        result.append(socket.gethostbyname(domain_name))
+        return result
+
+
+    @rpc(Unicode, _returns=Iterable(Unicode))
+    def domain_extra(ctx, domain_name):
+        """Docstrings for service methods appear as documentation in the wsdl.
+        <b>What fun!</b>
+        @param domain_name the domain to ping
+        @return the completed array
+        """
+        result = []
+
+        nameservers = dns.resolver.query(domain_name, 'NS')
+        result.append(nameservers)
+
         return result
 
 
