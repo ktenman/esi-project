@@ -1,21 +1,25 @@
 from datetime import datetime
-from flask import Flask
+from flask import Flask, request
 from suds.client import Client
 
 app = Flask("__name__")
-client = Client('link to your wsdl file', cache=None)
+# client = Client('link to your wsdl file', cache=None)
+client = Client('http://localhost:8090/?wsdl', cache=None) # TODO add error handling
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
-    return client.service.ping(arguments)
+    args = request.args
+    return str(client.service.ping(args.get("domain"), int(args.get("times"))))
 
 @app.route('/showip')
-def index():
-    return client.service.domain_ip(arguments)
+def showip():
+    args = request.args
+    return str(client.service.domain_ip(args.get("domain")))
 
 @app.route('/dns')
-def index():
-    return client.service.name_servers(arguments)
+def dns():
+    args = request.args
+    return str(client.service.name_servers(args.get("domain")))
 
 
 if __name__ == "__main__":
