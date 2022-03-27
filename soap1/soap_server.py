@@ -61,10 +61,16 @@ class HelloWorldService(ServiceBase):
         @return the completed array
         """
         result = []
-
         nameservers = dns.resolver.query(domain_name, 'NS')
         for data in nameservers.rrset:
-            result.append(data.to_text())
+            result.append("NS: "+data.to_text())
+
+        soa = dns.resolver.query(domain_name, 'SOA')
+        result.append("SOA: "+soa.rrset[0].mname.to_text())
+
+        mails = dns.resolver.query(domain_name, 'MX')
+        for i in range(len(mails.rrset)):
+            result.append("MX: "+mails.rrset[i].exchange.to_text())
 
         return result
 
