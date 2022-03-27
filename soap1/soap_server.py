@@ -63,7 +63,8 @@ class HelloWorldService(ServiceBase):
         result = []
 
         nameservers = dns.resolver.query(domain_name, 'NS')
-        result.append(nameservers)
+        for data in nameservers.rrset:
+            result.append(data.to_text())
 
         return result
 
