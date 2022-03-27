@@ -7,23 +7,10 @@ from spyne.server.wsgi import WsgiApplication
 
 
 class HelloWorldService(ServiceBase):
-    @rpc(Unicode, Integer, _returns=Iterable(Unicode))
-    def say_hello(ctx, name, times):
-        """Docstrings for service methods appear as documentation in the wsdl.
-        <b>What fun!</b>
-        @param name the name to say hello to
-        @param times the number of times to say hello
-        @return the completed array
-        """
-        result = []
-        for i in range(times):
-            result.append(f"Tere, {name}")
-        return result
 
     @rpc(Unicode, Integer, _returns=Iterable(Unicode))
     def ping(ctx, domain_name, times):
         """Docstrings for service methods appear as documentation in the wsdl.
-        <b>What fun!</b>
         @param domain_name the domain to ping
         @param times the number of times to execute ping
         @return the completed array
@@ -33,19 +20,17 @@ class HelloWorldService(ServiceBase):
         hostname = domain_name
         response = os.system(f"ping -c {times} " + hostname)
 
-        # and then check the response...
         if response == 0:
-            result.append(f"{hostname} is up!")
+            result.append(f"{hostname} reachable: {True}")
         else:
-            result.append(f"{hostname} is down!")
+            result.append(f"{hostname} reachable: {False}")
         return result
 
 
     @rpc(Unicode, _returns=Iterable(Unicode))
     def domain_ip(ctx, domain_name):
         """Docstrings for service methods appear as documentation in the wsdl.
-        <b>What fun!</b>
-        @param domain_name the domain to ping
+        @param domain_name the domain to get ip address
         @return the completed array
         """
         result = []
@@ -54,10 +39,9 @@ class HelloWorldService(ServiceBase):
 
 
     @rpc(Unicode, _returns=Iterable(Unicode))
-    def domain_extra(ctx, domain_name):
+    def name_servers(ctx, domain_name):
         """Docstrings for service methods appear as documentation in the wsdl.
-        <b>What fun!</b>
-        @param domain_name the domain to ping
+        @param domain_name the domain to get nameservers: NS, SOA, MX
         @return the completed array
         """
         result = []
